@@ -8,6 +8,8 @@ RUN python3 -m pip install numpy
 
 RUN rm -rv /usr/local/bin/jupyter* && python3 -m pip install --user --upgrade pip && python3 -m pip install --upgrade --force-reinstall jupyterlab && python3 -m pip install xgboost lightgbm seaborn h5py plotly line_profiler keras
 
-RUN python3 -m pip install uproot
+RUN python3 -m pip install uproot uproot-methods atlas-mpl-style
 
-RUN python3 -m pip install atlas-mpl-style
+ENV DEBIAN_FRONTEND=noninteractive 
+
+RUN apt update && apt install -y texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-greek tex-gyre dvipng 
