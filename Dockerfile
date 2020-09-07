@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorflow:20.01-tf2-py3
+FROM nvcr.io/nvidia/tensorflow:20.08-tf2-py3
 
 LABEL maintainer="wfedorko@triumf.ca"
 
