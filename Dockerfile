@@ -2,14 +2,16 @@ FROM nvcr.io/nvidia/tensorflow:20.08-tf2-py3
 
 LABEL maintainer="wfedorko@triumf.ca"
 
-RUN python3 -m pip uninstall -y numpy && python3 -m pip uninstall -y numpy && python3 -m pip uninstall -y numpy
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN python3 -m pip install numpy
+RUN python3 -m pip uninstall -y numpy
 
-RUN rm -rv /usr/local/bin/jupyter* && python3 -m pip install --user --upgrade pip && python3 -m pip install --upgrade --force-reinstall jupyterlab && python3 -m pip install xgboost lightgbm seaborn h5py plotly line_profiler keras tensorflow-addons
+RUN apt-get update && apt install -y texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-greek tex-gyre dvipng 
 
-RUN python3 -m pip install uproot uproot-methods atlas-mpl-style pydot graphviz
+RUN apt-get --yes upgrade && apt-get --yes install strace locate pydb ddd libxtst6 libxtst-dev libx11-dev libxpm-dev libxft-dev libxext-dev libssl-dev cmake
 
-ENV DEBIAN_FRONTEND=noninteractive 
+RUN rm -rv /usr/local/bin/jupyter* && python3 -m pip install --user --upgrade pip && python3 -m pip install --upgrade --force-reinstall jupyterlab && python3 -m pip install numpy uproot uproot-methods atlas-mpl-style pydot graphviz xgboost lightgbm seaborn h5py plotly line_profiler keras tensorflow-addons
 
-RUN apt update && apt install -y texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-greek tex-gyre dvipng 
+RUN wget https://root.cern/download/root_v6.22.06.source.tar.gz && tar -xzvf root_v6.22.06.source.tar.gz && rm root_v6.22.06.source.tar.gz && mkdir root_build root_install && cd root_build && export LD_LIBRARY_PATH=/usr/bin/python3:$LD_LIBRARY_PATH:$ROOTSYS/lib && cmake /workspace/root-6.22.06/ -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_INSTALL_PREFIX=../root_install -LA && cmake --build . -- -j24 && cmake --build . --target install && cd - && rm -r root-* root_build
+
+RUN source /workspace/root_install/bin/thisroot.sh && python3 -m pip install root_numpy
