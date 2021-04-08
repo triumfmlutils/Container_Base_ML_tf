@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/tensorflow:20.08-tf2-py3
+FROM nvcr.io/nvidia/tensorflow:21.03-tf2-py3
 
 LABEL maintainer="wfedorko@triumf.ca"
 
@@ -8,7 +8,7 @@ RUN python3 -m pip uninstall -y numpy
 
 RUN apt-get update && apt install -y texlive-latex-extra texlive-fonts-recommended texlive-science texlive-lang-greek tex-gyre dvipng 
 
-RUN apt-get --yes upgrade && apt-get --yes install strace locate pydb ddd libxtst6 libxtst-dev libx11-dev libxpm-dev libxft-dev libxext-dev libssl-dev cmake
+RUN apt-get --yes upgrade && apt-get --yes install strace locate ddd libxtst6 libxtst-dev libx11-dev libxpm-dev libxft-dev libxext-dev libssl-dev cmake
 
 RUN rm -rv /usr/local/bin/jupyter* && python3 -m pip install --user --upgrade pip && python3 -m pip install --upgrade --force-reinstall jupyterlab && python3 -m pip install numpy uproot uproot-methods atlas-mpl-style pydot graphviz xgboost lightgbm seaborn h5py plotly line_profiler keras tensorflow-addons
 
